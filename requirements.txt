@@ -1,0 +1,12 @@
+torch>=2.3
+transformers>=4.44,<5
+librosa>=0.10.2
+soundfile>=0.12
+numpy>=1.26
+pandas>=2.2
+scikit-learn>=1.5
+tqdm>=4.66
+imageio-ffmpeg>=0.5
+fastapi>=0.115
+uvicorn[standard]>=0.30
+python-multipart>=0.0.9

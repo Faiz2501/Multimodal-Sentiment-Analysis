@@ -1,0 +1,20 @@
+{
+  "text_model": "distilbert/distilbert-base-uncased",
+  "asr_model": "openai/whisper-tiny",
+  "audio_model": "facebook/wav2vec2-base-960h",
+  "sample_rate": 16000,
+  "max_audio_seconds": 12.0,
+  "max_text_tokens": 160,
+  "hidden_dim": 256,
+  "dropout": 0.25,
+  "freeze_encoders": true,
+  "batch_size": 2,
+  "epochs": 8,
+  "learning_rate": 0.0003,
+  "weight_decay": 0.01,
+  "gradient_accumulation_steps": 8,
+  "audio_augmentation": true,
+  "seed": 42,
+  "emotion_labels": ["happiness", "sadness", "anger", "fear", "disgust", "surprise", "neutral"],
+  "sarcasm_enabled": false
+}
