@@ -15,7 +15,26 @@ class Predictor:
         self.device = torch.device(device or ('cuda' if torch.cuda.is_available() else 'cpu'))
         self.tokenizer = AutoTokenizer.from_pretrained(self.root / 'tokenizer')
         self.model = SpeechTextFusion(self.config).to(self.device)
-        self.model.load_state_dict(torch.load(self.root / 'best_model.pt', map_location=self.device, weights_only=True))
+        state = torch.load(self.root / 'best_model.pt', map_location=self.device, weights_only=True)
+
+        manifest_path = self.root / 'checkpoint_manifest.json'
+        if manifest_path.is_file():
+            manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+            if manifest.get('format') != 'mmsa-frozen-backbone-v1':
+                raise ValueError('Unsupported checkpoint manifest format')
+            expected_saved = set(manifest.get('saved_keys', []))
+            if expected_saved != set(state):
+                raise ValueError('Checkpoint keys do not match checkpoint_manifest.json')
+            missing, unexpected = self.model.load_state_dict(state, strict=False)
+            expected_missing = set(manifest.get('omitted_frozen_keys', []))
+            if unexpected or set(missing) != expected_missing:
+                raise ValueError('Partial checkpoint is incomplete or incompatible with its model config')
+            trainable = {name for name, parameter in self.model.named_parameters() if parameter.requires_grad}
+            saved_trainable = expected_saved.intersection(trainable)
+            if not trainable.issubset(saved_trainable):
+                raise ValueError('Checkpoint omits trainable model parameters')
+        else:
+            self.model.load_state_dict(state)
         self.model.eval()
 
     @torch.no_grad()
@@ -37,3 +56,4 @@ class Predictor:
             'emotions': dict(zip(self.config['emotion_labels'], emotions)),
             'sarcasm_probability': sarcasm if self.config.get('sarcasm_enabled', False) else None,
         }
+
