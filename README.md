@@ -81,6 +81,10 @@ npm run dev
 
 Open the Vite URL printed by the frontend during development. For a single-server production-style local run, build the frontend and open `http://127.0.0.1:8001`. Audio uploads are decoded locally by the backend and are not persisted. Place the trained bundle in `artifacts/final/`; the health endpoint reports when the weights, config, and tokenizer are ready.
 
+### Checkpoint availability
+
+The application source and compact-checkpoint loader are in this repository, but the trained checkpoint files are not. Until the model bundle is exported from Colab and installed under `artifacts/final/`, `/api/health` reports `model_ready: false` and `/api/analyze` returns HTTP 503. The Colab runtime currently has no saved copy of the export, and free GPU access is temporarily unavailable, so the weights still need to be regenerated or recovered from a downloaded bundle before this app can perform inference.
+
 ## License and publication
 
 Review MELD's current terms and cite its authors in the final-year report. This repository contains the implementation only; do not commit MELD files, user recordings, credentials, or large trained weights. Publish model weights separately only after reviewing dataset terms and confirming redistribution rights.
