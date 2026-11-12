@@ -21,9 +21,19 @@ The training pipeline targets the official MELD dataset, which provides aligned 
 
 ## Trained model snapshot
 
-The saved improved checkpoint was trained on the official MELD train split, selected using the validation split, and evaluated once on the held-out official test split (2,610 utterances). Recorded results: sentiment accuracy **69.20%**, sentiment macro-F1 **66.45%**, sentiment MAE **1.325** on the configured −3 to +3 score scale; seven-way emotion accuracy **61.07%** and macro-F1 **35.43%**. The emotion task is substantially harder for rare labels (fear and disgust were not reliably detected). These are dataset-specific results, not guarantees for natural conversations, different accents, recording conditions, or sarcasm.
+The released checkpoint was trained on MELD's official train split, selected using validation data, and evaluated on the held-out official test split (2,610 utterances). Results: sentiment accuracy **69.46%**, sentiment macro-F1 **65.70%**, sentiment MAE **1.417** on the configured −3 to +3 score scale; seven-way emotion accuracy **60.92%** and macro-F1 **35.80%**. Fear and disgust remain difficult classes. These MELD results do not establish performance on natural conversations, different accents, recording conditions, or sarcasm.
 
-The model predicts sentiment and emotions only. The sarcasm output is disabled because MELD does not provide a reliable sarcasm target for this training setup. Whisper transcription runs locally; the supplied transcript can also be edited before analysis.
+The model predicts sentiment and emotions only; sarcasm output is disabled because MELD does not provide a reliable sarcasm target for this training setup. Whisper transcription runs locally, and the supplied transcript can be edited before analysis.
+
+### Download the trained model
+
+Download the [v1.0.0 model bundle](https://github.com/Faiz2501/Multimodal-Sentiment-Analysis/releases/download/v1.0.0/multimodal-sentiment-analysis-model.zip) and extract it into `artifacts/final/`:
+
+```powershell
+New-Item -ItemType Directory -Force artifacts/final | Out-Null
+Invoke-WebRequest "https://github.com/Faiz2501/Multimodal-Sentiment-Analysis/releases/download/v1.0.0/multimodal-sentiment-analysis-model.zip" -OutFile "$env:TEMP\mmsa-model.zip"
+Expand-Archive "$env:TEMP\mmsa-model.zip" -DestinationPath artifacts/final -Force
+```
 
 ## Install
 
@@ -83,9 +93,8 @@ Open the Vite URL printed by the frontend during development. For a single-serve
 
 ### Checkpoint availability
 
-The application source and compact-checkpoint loader are in this repository, but the trained checkpoint files are not. Until the model bundle is exported from Colab and installed under `artifacts/final/`, `/api/health` reports `model_ready: false` and `/api/analyze` returns HTTP 503. The Colab runtime currently has no saved copy of the export, and free GPU access is temporarily unavailable, so the weights still need to be regenerated or recovered from a downloaded bundle before this app can perform inference.
+The source tree includes the compact-checkpoint loader. Download and extract the release bundle above before running the application. The checkpoint contains fine-tuned layers and fusion heads; the matching pretrained DistilBERT and Wav2Vec2 encoder weights download from Hugging Face during first initialization. The first model startup therefore requires an internet connection. Set `HF_HOME` to a writable cache directory if your default Hugging Face cache is not writable.
 
 ## License and publication
 
-Review MELD's current terms and cite its authors in the final-year report. This repository contains the implementation only; do not commit MELD files, user recordings, credentials, or large trained weights. Publish model weights separately only after reviewing dataset terms and confirming redistribution rights.
-
+Review MELD's current terms and cite its authors in the final-year report. Raw MELD clips and user recordings are not included. The checkpoint is distributed in the GitHub release for this project; confirm dataset and pretrained encoder terms before further redistribution or commercial use. Do not commit credentials or raw dataset files.
