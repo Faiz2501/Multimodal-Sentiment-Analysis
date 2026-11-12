@@ -1,0 +1,20 @@
+{
+  "sentiment_classes": [
+    "negative",
+    "neutral",
+    "positive"
+  ],
+  "emotions": [
+    "happiness",
+    "sadness",
+    "anger",
+    "fear",
+    "disgust",
+    "surprise",
+    "neutral"
+  ],
+  "sarcasm": [
+    "not_sarcastic",
+    "sarcastic"
+  ]
+}

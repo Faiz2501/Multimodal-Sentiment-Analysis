@@ -1,0 +1,8 @@
+{
+  "sentiment_accuracy": 0.6946360153256705,
+  "sentiment_macro_f1": 0.6569789079431239,
+  "sentiment_mae": 1.4173762113198467,
+  "emotion_accuracy": 0.6091954022988506,
+  "emotion_macro_f1": 0.35802775198912656,
+  "test_examples": 2610
+}

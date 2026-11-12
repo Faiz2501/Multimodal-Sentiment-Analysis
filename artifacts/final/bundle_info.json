@@ -1,0 +1,6 @@
+{
+  "dataset": "MELD",
+  "checkpoint_type": "FP16 trained layers plus fusion heads; frozen pretrained encoder weights are loaded from Hugging Face",
+  "saved_tensor_count": 90,
+  "omitted_frozen_tensor_count": 245
+}

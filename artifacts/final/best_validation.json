@@ -1,0 +1,8 @@
+{
+  "loss": 1.0839296684933268,
+  "sentiment_accuracy": 0.6787003610108303,
+  "sentiment_macro_f1": 0.6381089766365841,
+  "sentiment_mae": 1.546053035433542,
+  "emotion_macro_f1": 0.3568180410064849,
+  "train_loss": 1.0439783276913224
+}
