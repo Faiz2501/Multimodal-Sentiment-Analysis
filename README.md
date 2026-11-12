@@ -95,6 +95,6 @@ Open the Vite URL printed by the frontend during development. For a single-serve
 
 The source tree includes the compact-checkpoint loader. Download and extract the release bundle above before running the application. The checkpoint contains fine-tuned layers and fusion heads; the matching pretrained DistilBERT and Wav2Vec2 encoder weights download from Hugging Face during first initialization. The first model startup therefore requires an internet connection. Set `HF_HOME` to a writable cache directory if your default Hugging Face cache is not writable.
 
-## License and publication
+## Dataset Credits
 
-Review MELD's current terms and cite its authors in the final-year report. Raw MELD clips and user recordings are not included. The checkpoint is distributed in the GitHub release for this project; confirm dataset and pretrained encoder terms before further redistribution or commercial use. Do not commit credentials or raw dataset files.
+https://affective-meld.github.io/
