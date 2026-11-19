@@ -1,11 +1,14 @@
 # Deployment
 
-## Recommended split
+## Current no-billing setup
 
-- **Frontend:** Vercel, with the Vercel project root set to `frontend`.
-- **Backend:** Google Cloud Run from this repository root, using the included `Dockerfile`.
+The frontend is hosted on Vercel at [https://multimodal-sentiment-analysis-meld.vercel.app/](https://multimodal-sentiment-analysis-meld.vercel.app/). The model backend runs on the same computer as the browser, listening on `127.0.0.1:8001`. This lets the owner use Vercel's hosted UI without hosting the model or entering cloud billing details. It only works on that same computer while the backend is running; other visitors' browsers would contact their own loopback address. See the README for the Command Prompt startup steps.
 
-Render's free web service is not a suitable host for this model: its free service has 512 MB RAM and 0.1 CPU, while inference needs both pretrained encoders and the Python runtime in memory. Cloud Run is request-based and has a monthly free allowance, but it requires a billing-enabled Google Cloud project and usage beyond the free allowance can be charged. Set a maximum of one instance and zero minimum instances for a small demonstration; this limits scale but does not create a guaranteed billing cap.
+The Vercel production environment variable `VITE_API_BASE_URL` is set to `http://127.0.0.1:8001/api`. The backend CORS allowlist includes the Vercel origin. The frontend root directory is `frontend`.
+
+## Optional hosted backend (billing required)
+
+Render's free web service is not a suitable host for this model: its free service has 512 MB RAM and 0.1 CPU, while inference needs both pretrained encoders and the Python runtime in memory. Cloud Run has a monthly free allowance, but it requires a billing-enabled Google Cloud project and usage beyond the free allowance can be charged. Do not use this option unless you are willing to enable billing.
 
 ## Backend on Cloud Run
 
@@ -18,13 +21,13 @@ Render's free web service is not a suitable host for this model: its free servic
 
 The checkpoint bundle is included in the repository. The matching pretrained DistilBERT, Wav2Vec2, and Whisper weights are downloaded from Hugging Face when first used by a new container instance.
 
-## Frontend on Vercel
+## Vercel frontend settings
 
 1. Import the GitHub repository in Vercel and set **Root Directory** to `frontend`.
 2. Use `npm run build` as the build command and `dist` as the output directory. Install with `npm ci` when `package-lock.json` is present.
-3. Add the build-time environment variable `VITE_API_BASE_URL` with the Cloud Run URL followed by `/api`, for example `https://your-api.run.app/api`.
-4. Deploy, copy the Vercel production origin, and ensure that exact origin is included in the backend's `CORS_ORIGINS` value.
-5. Redeploy the frontend after changing `VITE_API_BASE_URL`; it is embedded at build time.
+3. For the current local-backend setup, set the production build-time environment variable `VITE_API_BASE_URL` to `http://127.0.0.1:8001/api`.
+4. The backend must allow the exact Vercel origin in `CORS_ORIGINS`; the default configuration includes the current Vercel domain.
+5. Redeploy the frontend after changing `VITE_API_BASE_URL`; it is embedded at build time. To use a future hosted backend instead, set this value to that backend's URL ending in `/api` and configure its CORS allowlist for the Vercel origin.
 
 For local development, leave `VITE_API_BASE_URL` unset: the frontend continues to call `/api` through the Vite development proxy.
 
