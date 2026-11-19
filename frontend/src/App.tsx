@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 type Health = { status:string; model_ready:boolean; device:string; asr_model:string }
 type Analysis = { sentiment:string; sentiment_score:number; emotions:Record<string,number>; sarcasm_probability:number|null }
 type HistoryItem = { id:number; text:string; sentiment:string; score:number; time:string }
-const API='/api'
+const API=(import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/$/,'')
 
 async function apiData<T>(response:Response):Promise<T>{
   const data=await response.json().catch(()=>({detail:'The server returned an unreadable response'}))

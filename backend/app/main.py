@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 
 from fastapi import FastAPI,File,Form,HTTPException,UploadFile
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,7 +9,8 @@ from app.core.audio import MAX_UPLOAD_BYTES,as_wav
 from app.core.services import predictor,status,transcriber
 
 app=FastAPI(title="Multimodal Sentiment Analysis API",version="1.0.0",description="Local speech and transcript inference API")
-app.add_middleware(CORSMiddleware,allow_origins=["http://localhost:5173","http://127.0.0.1:5173"],allow_credentials=True,allow_methods=["GET","POST"],allow_headers=["*"])
+cors_origins=[origin.strip() for origin in os.getenv("CORS_ORIGINS","http://localhost:5173,http://127.0.0.1:5173").split(",") if origin.strip()]
+app.add_middleware(CORSMiddleware,allow_origins=cors_origins,allow_credentials=True,allow_methods=["GET","POST"],allow_headers=["*"])
 
 @app.get("/api/health")
 def health(): return status()
