@@ -10,7 +10,7 @@ Speech and text sentiment analysis project with a multimodal model, training/eva
 - `configs/` — model and training configuration
 - `scripts/` — MELD acquisition preparation and manifest utilities
 - `notebooks/` — Colab workflow notes
-- `artifacts/final/` — local model checkpoints; model weights are excluded from Git by default
+- `artifacts/final/` — released trained checkpoint and model metadata are tracked in GitHub; other generated artifacts are ignored by default
 - `data/` — local datasets and derived features; excluded from Git
 
 ## Model and dataset
@@ -111,7 +111,7 @@ Open the Vite URL printed by the frontend during development. For a single-serve
 
 ### Checkpoint availability
 
-The source tree includes the compact-checkpoint loader. Download and extract the release bundle above before running the application. The checkpoint contains fine-tuned layers and fusion heads; the matching pretrained DistilBERT and Wav2Vec2 encoder weights download from Hugging Face during first initialization. The first model startup therefore requires an internet connection. Set `HF_HOME` to a writable cache directory if your default Hugging Face cache is not writable.
+The source tree includes the compact-checkpoint loader, and the released checkpoint, config, labels, tokenizer, and results are tracked under `artifacts/final/`. If those files are missing from a checkout, download and extract the release bundle above. The checkpoint contains fine-tuned layers and fusion heads; the matching pretrained DistilBERT and Wav2Vec2 encoder weights download from Hugging Face during first initialization. The first model startup therefore requires an internet connection. Set `HF_HOME` to a writable cache directory if your default Hugging Face cache is not writable.
 
 ## Dataset Credits
 
