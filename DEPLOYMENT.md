@@ -27,3 +27,20 @@ The checkpoint bundle is included in the repository. The matching pretrained Dis
 5. Redeploy the frontend after changing `VITE_API_BASE_URL`; it is embedded at build time.
 
 For local development, leave `VITE_API_BASE_URL` unset: the frontend continues to call `/api` through the Vite development proxy.
+
+## Use the Vercel frontend with a backend on your computer
+
+This option serves the UI from Vercel but performs inference on your computer. It only works in a browser running on the same computer as the backend; other visitors' browsers would try to contact their own computer.
+
+1. In the Vercel project settings, set the Production environment variable `VITE_API_BASE_URL` to `http://127.0.0.1:8001/api`, then redeploy the frontend.
+2. Start the backend on your computer using the command below from the repository root in **Command Prompt**:
+
+   ```cmd
+   set PYTHONPATH=%CD%\src
+   set CORS_ORIGINS=https://multimodal-sentiment-analysis-meld.vercel.app
+   .venv\Scripts\python.exe -m uvicorn app.main:app --app-dir backend --host 127.0.0.1 --port 8001
+   ```
+
+3. Open `https://multimodal-sentiment-analysis-meld.vercel.app`. If the browser asks whether the site can access devices on your local network, allow it. Keep the backend command window open while using the site.
+
+Alternatively, leave the Vercel environment variable unset and run both frontend and backend locally; Vite proxies `/api` to port 8001.
