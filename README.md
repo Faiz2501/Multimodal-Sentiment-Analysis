@@ -73,7 +73,25 @@ Training saves the best validation checkpoint, a resumable checkpoint, model con
 
 ## Run the application
 
-The frontend and API are connected through the Vite `/api` proxy in development. Build the frontend with `npm run build`; when `frontend/dist` exists, FastAPI serves the production UI and API from the same local server.
+The frontend and API are connected through the Vite `/api` proxy in local development. The public Vercel frontend can also call the API on the same computer, as described below. Build the frontend with `npm run build`; when `frontend/dist` exists, FastAPI serves the production UI and API from the same local server.
+
+### Use the Vercel frontend with the local backend
+
+The frontend is deployed at [https://multimodal-sentiment-analysis-meld.vercel.app/](https://multimodal-sentiment-analysis-meld.vercel.app/). Its production API URL is configured as `http://127.0.0.1:8001/api`, so the page calls the backend on the computer where the browser is running. This is for personal demos on the same computer: another visitor's browser would call its own computer, not yours. Keep your computer on and leave the backend running while using the site.
+
+Open **Command Prompt** at the repository root and run:
+
+```cmd
+set PYTHONPATH=%CD%\src
+set CORS_ORIGINS=https://multimodal-sentiment-analysis-meld.vercel.app
+.venv\Scripts\python.exe -m uvicorn app.main:app --app-dir backend --host 127.0.0.1 --port 8001
+```
+
+Then open the Vercel URL in a browser on that same computer. If the browser asks for permission to access the local network, allow it. The backend is still local and is not available to other Vercel visitors.
+
+### Run both frontend and backend locally
+
+For local development, Vite serves the UI and proxies `/api` to the local backend.
 
 Start the backend in one terminal:
 
